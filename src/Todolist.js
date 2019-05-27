@@ -31,20 +31,7 @@ class Todolist extends React.Component{//JSX必须在最外层包一个元素
 				/>
 				<button onClick={this.handleButtonClick}>提交</button>
 				<ul>
-					{
-						this.state.list.map((item,index)=>{
-                            return(
-                            	<li key = {index}>
-									<TodoItem
-
-										content={item}
-										index={index}
-										deleteItem={this.handleItemDelete}/>
-								</li>
-							)
-
-					})
-					}
+					{this.getToDoItem()}
 				</ul>
 			 </Fragment>
 			)
@@ -62,6 +49,21 @@ class Todolist extends React.Component{//JSX必须在最外层包一个元素
 			list: [...prevState.list,prevState.inputvalue],
 			inputvalue:''
 		}));
+	}
+
+	getToDoItem(){
+        return (this.state.list.map((item,index)=>{
+            return(
+                <li key = {index}>
+                    <TodoItem
+
+                        content={item}
+                        index={index}
+                        deleteItem={this.handleItemDelete}/>
+                </li>
+            )
+
+        }))
 	}
 	handleInputChange(e){
 		console.log(this);
