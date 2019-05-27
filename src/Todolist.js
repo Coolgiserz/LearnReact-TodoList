@@ -36,6 +36,10 @@ class Todolist extends React.Component{//JSX必须在最外层包一个元素
 			 </Fragment>
 			)
 	}
+	//在此生命周期函数中做ajax请求
+	componentDidMount(){
+
+	}
     handleItemDelete(index){//点击后将数据从数组删除
 		const list = [...this.state.list];//...是展开运算符，此操作拷贝了一份数据
 		list.splice(index,1);//删除下标为index的list，splice

@@ -5,7 +5,15 @@ class TodoItem extends Component{
         super(props);
         this.handleClick = this.handleClick.bind(this);//为该函数绑定父组件的作用域，this指向父组件
     }
+    //该组件被渲染一次后不再更新，优化性能，否则父组件每次被更新，该组件会被重新渲染
+    shouldComponentUpdate(nextProps, nextState){
+        if(nextProps.content !== this.props.content){
+            return true;
+        }
+        return false;
+    }
     render(){
+        console.log('todoitem render');
         const {test,content} = this.props;
 
         return(
@@ -15,6 +23,7 @@ class TodoItem extends Component{
 
         )
     }
+
     handleClick(){
         // const index = this.props.index;
         // const deleteItem = this.props.deleteItem;
