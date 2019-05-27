@@ -2,6 +2,8 @@ import React, {Component, Fragment} from 'react';//Fragment:占位符
 import 'antd/dist/antd.css'
 import {Input, Button, List} from 'antd';
 import store from './store/index';
+import {getInputChangeAction,getAddItemAction,getDeleteItemAction} from './store/createActions'
+import {CHANGE_INPUT_VALUE,ADD_TODO_ITEM,DELETE_TODO_ITEM} from './store/actionTypes';//从actionTypes中导入action的类型
 const data = [];
 class Todolist extends Component{//JSX必须在最外层包一个元素
     constructor(props){ //固定写法
@@ -29,9 +31,10 @@ class Todolist extends Component{//JSX必须在最外层包一个元素
 					<Button type='primary' onClick={this.handleItemSubmit}>提交</Button>
 				</div>
                 <List
+
                     size="small"
                     bordered
-					style={{width:'320px'}}
+					style={{width:'320px', marginLeft:'10px'}}
                     dataSource={this.state.list}
                     renderItem={(item,index) => <List.Item onClick={this.handleItemDelete.bind(this.index)}>{item}</List.Item>}
                 />
@@ -46,10 +49,8 @@ class Todolist extends Component{//JSX必须在最外层包一个元素
 		this.setState(store.getState());//将store中新的状态赋予该组件
 	}
     handleItemDelete(index){//点击后将数据从数组删除
-		const action = {
-			type : 'delete_todo_item',
-			index: index
-		};
+
+		const action = getDeleteItemAction(index);
 		store.dispatch(action);
 	}
 
@@ -57,23 +58,17 @@ class Todolist extends Component{//JSX必须在最外层包一个元素
 	 * 用户点击提交后，将输入框中的文本发送给store，由store转发给reducer处理
      */
     handleItemSubmit(){
-    	const action = {
-    		type:'add_todo_item'
-		};
-		store.dispatch(action);
+
+        const action = getAddItemAction();
+
+        store.dispatch(action);//派发action
 	}
 
-	getToDoItem(){
 
-	}
 	handleInputChange(e){
-    	const action = {
-    		type:'change_input_value',
-			value: e.target.value
+        const action = getInputChangeAction(e.target.value);
 
-		};
     	store.dispatch(action);
-		// console.log('action:',action)
 	}
 }
 export default Todolist;//导出方能被引用
