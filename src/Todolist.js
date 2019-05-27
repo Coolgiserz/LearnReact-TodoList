@@ -6,13 +6,19 @@ class Todolist extends React.Component{//JSX必须在最外层包一个元素
 	constructor(props){ //固定写法
 		super(props);
 		this.state = {//组件状态
-			inputvalue: '?',//输入框中的内容，要将其与输入框绑定
+			inputvalue: '生活艰难',//输入框中的内容，要将其与输入框绑定
 			list: []
 		};
+
+		//======把bind放在构造函数完成，性能更好
+        this.handleInputChange=this.handleInputChange.bind(this);
+        this.handleButtonClick=this.handleButtonClick.bind(this);
+        this.handleItemDelete = this.handleItemDelete.bind(this);
 	}
 
 	//return后的内容若有多行，要用括号括起
 	render(){
+		const inputvalue = this.state.inputvalue;
 		return (
 			<Fragment>
                 <label htmlFor="insertArea">输入内容</label>
@@ -20,18 +26,20 @@ class Todolist extends React.Component{//JSX必须在最外层包一个元素
 				<input
 					id="insertArea"
 					className='input'
-					value={this.state.inputvalue}
-					onChange={this.handleInputChange.bind(this)}
+					value={inputvalue}
+					onChange={this.handleInputChange}
 				/>
-				<button onClick={this.handleButtonClick.bind(this)}>提交</button>
+				<button onClick={this.handleButtonClick}>提交</button>
 				<ul>
 					{
 						this.state.list.map((item,index)=>{
-							{/*绑定删除功能*/}                {/*不转义html*/}
-
                             return(
-                            	<li>
-									<TodoItem content={item} index={index} deleteItem={this.handleItemDelete.bind(this)}/>
+                            	<li key = {index}>
+									<TodoItem
+
+										content={item}
+										index={index}
+										deleteItem={this.handleItemDelete}/>
 								</li>
 							)
 
@@ -46,20 +54,26 @@ class Todolist extends React.Component{//JSX必须在最外层包一个元素
 		list.splice(index,1);//删除下标为index的list，splice
 		console.log(index);
 		this.setState({
-			list: list
+			list
 		});
 	}
     handleButtonClick(e){
-		this.setState({
-			list: [...this.state.list,this.state.inputvalue],
+		this.setState((prevState)=>({
+			list: [...prevState.list,prevState.inputvalue],
 			inputvalue:''
-		});
+		}));
 	}
 	handleInputChange(e){
 		console.log(this);
-		this.setState({
-			inputvalue: e.target.value
-		});
+		//旧写法
+		// this.setState({
+		// 	inputvalue: e.target.value
+		// });
+		//新写法
+		const value = e.target.value;
+        this.setState(()=>({
+				inputvalue: value
+        }));
 		//不对的写法this.state.inputvalue = e.target.value;//这种写法不对！此时this为undefine而不是Todolist的组件
 		console.log(e.target.value);
 

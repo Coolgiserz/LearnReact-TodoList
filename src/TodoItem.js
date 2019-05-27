@@ -10,20 +10,16 @@ class TodoItem extends Component{
 
         return(
             <div onClick={this.handleClick}>
-                {this.props.content}
-
+                {content}
                 </div>
 
         )
     }
     handleClick(){
-        this.props.deleteItem(this.props.index);//调用父组件的方法：deleteItem实际上是handleItemDelete
+        const index = this.props.index;
+        const deleteItem = this.props.deleteItem;
+        deleteItem(index);//调用父组件的方法：deleteItem实际上是handleItemDelete
     }
-    // deleteItem(){
-    //     alert(this.props.index);
-    //     // this.handleDeleteItem()
-    // }
-
 }
 
 export default TodoItem;
