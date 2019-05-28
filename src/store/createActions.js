@@ -1,4 +1,4 @@
-import {CHANGE_INPUT_VALUE,ADD_TODO_ITEM,DELETE_TODO_ITEM} from './actionTypes';//从actionTypes中导入action的类型
+import {INIT_TODO_ITEM, CHANGE_INPUT_VALUE,ADD_TODO_ITEM,DELETE_TODO_ITEM} from './actionTypes';//从actionTypes中导入action的类型
 
 //统一管理action创建器
 export const getInputChangeAction = (value)=>({
@@ -13,4 +13,9 @@ export const getAddItemAction = ()=>({
 export const getDeleteItemAction = (index)=>({
     type: DELETE_TODO_ITEM,
     index
+});
+
+export const getInitTodoItem = (data)=>({
+    type: INIT_TODO_ITEM,
+    data
 });

@@ -1,4 +1,4 @@
-import {CHANGE_INPUT_VALUE,ADD_TODO_ITEM,DELETE_TODO_ITEM} from './actionTypes';
+import {INIT_TODO_ITEM, CHANGE_INPUT_VALUE,ADD_TODO_ITEM,DELETE_TODO_ITEM} from './actionTypes';
 
 const defaultState = {
     inputvalue: '',
@@ -30,6 +30,12 @@ export default (state = defaultState,action)=>{
     if(action.type === DELETE_TODO_ITEM){
         const newState = JSON.parse(JSON.stringify(state));
         newState.list.splice(action.index,1);//删除newState中的数据
+        return newState;
+
+    }
+    if(action.type === INIT_TODO_ITEM){//初始化列表数据
+        const newState = JSON.parse(JSON.stringify(state));
+        newState.list = action.data;//删除newState中的数据
         return newState;
 
     }

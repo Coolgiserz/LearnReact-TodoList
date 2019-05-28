@@ -1,9 +1,9 @@
 import React, {Component, Fragment} from 'react';//Fragment:占位符
-import 'antd/dist/antd.css'
-import {Input, Button, List} from 'antd';
+
 import store from './store/index';
-import {getInputChangeAction,getAddItemAction,getDeleteItemAction} from './store/createActions'
-import {CHANGE_INPUT_VALUE,ADD_TODO_ITEM,DELETE_TODO_ITEM} from './store/actionTypes';//从actionTypes中导入action的类型
+import axios from 'axios';
+import {getInputChangeAction,getAddItemAction,getDeleteItemAction, getInitTodoItem} from './store/createActions'
+import TodolistUI from './TodolistUI';
 const data = [];
 class Todolist extends Component{//JSX必须在最外层包一个元素
     constructor(props){ //固定写法
@@ -20,28 +20,36 @@ class Todolist extends Component{//JSX必须在最外层包一个元素
 	//return后的内容若有多行，要用括号括起
 	render(){
 		return (
-			<Fragment>
-				<div>
-				<Input
-					value={this.state.inputvalue}
-					placeholder='To do'
-					style={{width : '300px' , marginLeft:'10px'}}
-					onChange={this.handleInputChange}
-				/>
-					<Button type='primary' onClick={this.handleItemSubmit}>提交</Button>
-				</div>
-                <List
+            <TodolistUI
+				content = 'Hello world'
+                value = {this.state.inputvalue}
+                handleInputChange = {this.handleInputChange}
+                handleItemSubmit = {this.handleItemSubmit}
+                handleStoreChange = {this.handleStoreChange}
+                handleItemDelete = {this.handleItemDelete.bind(this)}
+                list = {this.state.list}
+			/>
 
-                    size="small"
-                    bordered
-					style={{width:'320px', marginLeft:'10px'}}
-                    dataSource={this.state.list}
-                    renderItem={(item,index) => <List.Item onClick={this.handleItemDelete.bind(this.index)}>{item}</List.Item>}
-                />
-			 </Fragment>
+
 			)
 	}
 
+	componentDidMount(){
+    	//ajax request for initilized data
+		console.log('Did mount ');
+        axios.get('/testapi.json')
+			.then((res)=>{
+				// 成功回调函数
+				// console.log('res:', res);
+				const data = res.data;
+                const action = getInitTodoItem(data);
+                store.dispatch(action);
+
+            }
+		).catch(()=>{
+			//错误回调函数
+		});
+	}
     /**
 	 * store改变时执行此方法
      */
